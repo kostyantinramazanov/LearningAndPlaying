@@ -1,5 +1,6 @@
 package com.kr.algorithms.trees;
 
+import java.io.*;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -10,7 +11,7 @@ import java.util.Queue;
  * Time: 0:04
  * To change this template use File | Settings | File Templates.
  */
-public class RBTree {
+public class RBTree implements Serializable {
     private class Node {
         private int value;
         private Node left;
@@ -22,6 +23,35 @@ public class RBTree {
             isRed = b;
             this.left = null;
             this.right = null;
+        }
+
+        public void writeObject(ObjectOutputStream os) throws IOException {
+            os.writeInt(value);
+            if (left == null) os.writeInt(0);
+            else left.writeObject(os);
+
+            if (right == null) os.writeInt(0);
+            else right.writeObject(os);
+        }
+
+        public void readObject(ObjectInputStream is) throws IOException {
+            if (is.available() > 0) {
+                int leftVal = is.readInt();
+                if (leftVal == 0) left = null;
+                else {
+                    left = new Node(leftVal, false);
+                    left.readObject(is);
+                }
+            }
+
+            if(is.available() > 0){
+                int rightVal = is.readInt();
+                if (rightVal == 0) right = null;
+                else {
+                    right = new Node(rightVal, false);
+                    right.readObject(is);
+                }
+            }
         }
     }
 
@@ -173,6 +203,22 @@ public class RBTree {
         } while (thisLevel.peek() != null);
     }
 
+    private void writeObject(ObjectOutputStream os) throws IOException {
+        if (root != null)
+            root.writeObject(os);
+        else os.writeInt(0);
+    }
+
+    private void readObject(ObjectInputStream is) throws IOException {
+        if (is.available() > 0) {
+            int val = is.readInt();
+            if (val != 0) {
+                root = new Node(val, false);
+                root.readObject(is);
+            }
+        }
+    }
+
     public static void main(String[] args) {
         int[] src = new int[]{1, 2, 33, 44, 55, 66, 777};
         RBTree tree = new RBTree();
@@ -180,10 +226,25 @@ public class RBTree {
             tree.put(i);
         }
         tree.printTree();
-        int[] seqToRemove = new int[]{44, 55, 66, 777, 1};
+        int[] seqToRemove = new int[]{1};
         for (int i : seqToRemove) {
             tree.delete(i);
             tree.printTree();
+        }
+
+        try {
+            new ObjectOutputStream(new FileOutputStream("C:\\zzz.txt")).writeObject(tree);
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        try {
+            RBTree tree2 = (RBTree) new ObjectInputStream(new FileInputStream("C:\\zzz.txt")).readObject();
+            tree2.printTree();
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
 }
