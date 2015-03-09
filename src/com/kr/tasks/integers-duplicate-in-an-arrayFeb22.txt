@@ -1,0 +1,36 @@
+Instructions:
+--------------
+
+- Please provide a single file, formatted as a plain text file or Word document. Other formats will not be accepted and cannot be evaluated!
+- Provide one solution written in C, C++, Java or C#.
+- Code should be production quality – clearly written, runnable, and documented.
+- Provide several examples that call your function and demonstrate that it works.
+- You may use any functions or classes from the JDK, STL, or .Net Framework.
+- Do not include extraneous code that is not relevant to your solution.
+- Provide the average runtime and space complexity (memory usage), and worst-case runtime and space complexity for your solution, and a short explanation as to why.
+- State any assumptions you make for your solution.
+- Keep all information related to this problem completely confidential
+
+Problem:
+-----------
+Given a sorted array and an integer, implement a function to find (efficiently) if the number is repeated at least twice and if so, return the index of its second occurrence if the number is found, and return -1 if the number is not found. 
+
+Please note:
+1.	Array can be very large. 
+2.	Numbers can be a negative or positive integer
+3.	Array is sorted. 
+
+Example array: 1,1,2,3,3,9,9,9,17,19,23,23,23,100
+
+---------------------------------------------------------
+|	Input Integer to find	|	Result		|
+---------------------------------------------------------
+|	1			|	2		|
+|	2			|	-1		|
+|	3			|	5		|
+|	9			|	7		|
+|	17			|	-1		|
+|	18			|	-1		|
+|	23			|	12		|
+---------------------------------------------------------
+

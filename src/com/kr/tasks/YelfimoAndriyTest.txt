@@ -1,0 +1,81 @@
+Description:
+
+In the algo below I've applied bisection division algorithm to find effectively element in the sorted array.
+The efficiency of the algorithm is O(log n). The algo doesn't have significant memory constraints as no complex objects used.
+Also checked courner cases to omit unnecessary calculations.
+
+
+Code:
+
+package test;
+
+public class Test {
+
+    public static int findSecondOccurence(int[] arr, int el) {
+        int result = findSecondOccurenceNative(arr, el);
+        return (result != -1 ? result + 1 : result);
+    }
+
+    private static int findSecondOccurenceNative(int[] arr, int el) {
+        int result = -1;
+        if (arr == null || arr.length <= 1)
+            return result;
+        if (el < arr[0] || el > arr[arr.length - 1])
+            return result;
+
+        int start = 0;
+        int end = arr.length - 1;
+        int ind = -1;
+        while (end - start > 1) {
+            ind = start + ((end - start) / 2);
+            if (arr[ind] > el) {
+                end = ind;
+            } else if (arr[ind] < el) {
+                start = ind;
+            } else {
+                return findSecondOccurenceConsequentially(arr, el, ind);
+            }
+        }
+
+        return -1;
+    }
+
+    private static int findSecondOccurenceConsequentially(int[] arr, int el,
+            int ind) {
+        int occurences = 1;
+        int i;
+        for (i = ind - 1; i >= 0; i--) {
+            if (arr[i] == el) {
+                occurences++;
+            } else {
+                break;
+            }
+        }
+        if (occurences > 1)
+            return i + 2;
+
+        int rightInd = ind + 1;
+        if (rightInd < arr.length && el == arr[rightInd])
+            return rightInd;
+
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = new int[] { 1, 1, 2, 3, 3, 9, 9, 9, 17, 19, 23, 23, 23, 100 };
+        System.out.println(String.format("For %d result is %d", 1,
+                findSecondOccurence(arr, 1)));
+        System.out.println(String.format("For %d result is %d", 2,
+                findSecondOccurence(arr, 2)));
+        System.out.println(String.format("For %d result is %d", 3,
+                findSecondOccurence(arr, 3)));
+        System.out.println(String.format("For %d result is %d", 9,
+                findSecondOccurence(arr, 9)));
+        System.out.println(String.format("For %d result is %d", 17,
+                findSecondOccurence(arr, 17)));
+        System.out.println(String.format("For %d result is %d", 18,
+                findSecondOccurence(arr, 18)));
+        System.out.println(String.format("For %d result is %d", 23,
+                findSecondOccurence(arr, 23)));
+    }
+}
